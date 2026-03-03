@@ -31,6 +31,12 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
+userSchema.pre("save", async function (next) {
+  const count = await model("User").countDocuments({ mobile: this.mobile });
+  if (count > 0) throw next(new Error("Mobile number already exist"));
+  next();
+});
+
 const UserModel = model("User", userSchema);
 
 module.exports = UserModel;
