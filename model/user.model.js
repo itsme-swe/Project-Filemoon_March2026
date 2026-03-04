@@ -31,10 +31,20 @@ const userSchema = new Schema(
   { timestamps: true },
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   const count = await model("User").countDocuments({ mobile: this.mobile });
-  if (count > 0) throw next(new Error("Mobile number already exist"));
-  next();
+
+  if (count > 0) {
+    throw new Error("Mobile number already exist");
+  }
+});
+
+userSchema.pre("save", async function () {
+  const count = await model("User").countDocuments({ email: this.email });
+
+  if (count > 0) {
+    throw new Error("Email already exist");
+  }
 });
 
 const UserModel = model("User", userSchema);
