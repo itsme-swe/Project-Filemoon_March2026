@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
   {
@@ -45,6 +46,11 @@ userSchema.pre("save", async function () {
   if (count > 0) {
     throw new Error("Email already exist");
   }
+});
+
+userSchema.pre("save", async function () {
+  const encryptedPassword = await bcrypt.hash(this.password.toString(), 12);
+  this.password = encryptedPassword;
 });
 
 const UserModel = model("User", userSchema);
