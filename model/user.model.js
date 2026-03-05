@@ -48,6 +48,7 @@ userSchema.pre("save", async function () {
   }
 });
 
+// 🌟 Password encrypt before storing
 userSchema.pre("save", async function () {
   const encryptedPassword = await bcrypt.hash(this.password.toString(), 12);
   this.password = encryptedPassword;

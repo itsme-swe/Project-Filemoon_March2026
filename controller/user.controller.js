@@ -20,7 +20,11 @@ const login = async (req, res) => {
 
     const isLogin = bcrypt.compareSync(password, user.password);
 
-    if (!isLogin) return res.status(401).json({ message: "Invalid Password" });
+    // Is code ka matlab hai ki "isLogin" ka value false hai toh code ko execute karo
+    if (!isLogin)
+      return res.status(401).json({ message: "Invalid credentials " });
+
+    res.status(201).json({ message: "Login Successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
