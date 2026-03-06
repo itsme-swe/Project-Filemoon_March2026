@@ -1,9 +1,45 @@
 const FileModel = require("../model/file.model");
 
-const createFile = (req, res) => {
-  res.send("Success");
+const createFile = async (req, res) => {
+  try {
+    const file = req.file;
+    const payload = {
+      filename: `${file.destination}${file.filename}`,
+      filetype: file.mimetype.split("/")[0],
+      size: file.size,
+    };
+    const newFile = await FileModel.create(payload);
+    res.status(201).json(newFile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const fetchFiles = async (req, res) => {
+  try {
+    const files = await FileModel.find();
+    res.status(201).json(files);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const file = await FileModel.findByIdAndDelete(id);
+
+    if (!file) {
+      res.status(404).json({ message: "File not found!!" });
+    }
+    res.status(201).json(file);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
   createFile,
+  fetchFiles,
+  deleteFile,
 };
