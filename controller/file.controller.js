@@ -54,10 +54,13 @@ const downloadFile = async (req, res) => {
 
     const root = process.cwd();
     const filePath = path.join(root, file.path);
+
+    //🌟 code is responsible to force browser to download the file
     res.setHeader(
       "Content-Disposition",
       `attachement; filename="${file.filename}"`,
     );
+
     res.sendFile(filePath, (err) => {
       if (err) {
         res.status(404).json({ message: "File not found" });
