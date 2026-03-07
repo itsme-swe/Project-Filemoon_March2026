@@ -3,10 +3,12 @@ const FileModel = require("../model/file.model");
 const fetchDashboard = async (req, res) => {
   try {
     const reports = await FileModel.aggregate([
+      { $group: { _id: "$filetype", total: { $sum: 1 } } },
       {
-        $group: {
-          _id: "$filetype",
-          tottal: { $sum: 1 },
+        $project: {
+          type: "$_id",
+          total: 1,
+          _id: 0,
         },
       },
     ]);
