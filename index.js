@@ -26,6 +26,7 @@ const {
   createFile,
   fetchFiles,
   deleteFile,
+  downloadFile,
 } = require("./controller/file.controller");
 const app = express();
 app.listen(process.env.PORT || 8080);
@@ -40,3 +41,4 @@ app.post("/login", login);
 app.post("/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
 app.get("/file", fetchFiles);
 app.delete("/file/:id", deleteFile);
+app.get("/file/download/:id", downloadFile);

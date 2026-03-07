@@ -1,10 +1,12 @@
 const FileModel = require("../model/file.model");
+const fs = require("fs");
 
 const createFile = async (req, res) => {
   try {
     const file = req.file;
     const payload = {
-      filename: `${file.destination}${file.filename}`,
+      path: `${file.destination}${file.filename}`,
+      filename: file.filename,
       filetype: file.mimetype.split("/")[0],
       size: file.size,
     };
@@ -32,7 +34,16 @@ const deleteFile = async (req, res) => {
     if (!file) {
       res.status(404).json({ message: "File not found!!" });
     }
+
+    fs.unlinkSync(file.path);
     res.status(201).json(file);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const downloadFile = (req, res) => {
+  try {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -42,4 +53,5 @@ module.exports = {
   createFile,
   fetchFiles,
   deleteFile,
+  downloadFile,
 };
