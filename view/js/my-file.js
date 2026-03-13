@@ -1,3 +1,5 @@
+axios.defaults.baseURL = SERVER;
+
 const toggleDrawer = () => {
   const drawer = document.getElementById("drawer");
   const rightValue = drawer.style.right;
@@ -14,7 +16,7 @@ const uploadFile = async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const { data } = await axios.post("http://localhost:8080/file", formData);
+    const { data } = await axios.post("/api/file", formData);
     console.log(data);
   } catch (error) {
     console.log(error.message);

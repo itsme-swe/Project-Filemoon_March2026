@@ -1,3 +1,5 @@
+axios.defaults.baseURL = SERVER;
+
 //🌟 Third party library used to give notification on UI
 const toast = new Notyf({
   position: { x: "center", y: "top" },
@@ -7,7 +9,7 @@ const checkSession = async () => {
   const session = await getSession();
 
   if (session) {
-    location.href = "app/dashboard.html";
+    location.href = "/dashboard";
   }
 };
 checkSession();
@@ -24,13 +26,13 @@ const signup = async (e) => {
       password: elements.password.value,
     };
 
-    const { data } = await axios.post("http://localhost:8080/signup", payload);
+    const { data } = await axios.post("/api/signup", payload);
     form.reset();
     toast.success(data.message);
 
     //🌟 Redirecting user to login page after successfully signup
     setTimeout(() => {
-      location.href = "index.html";
+      location.href = "/login";
     }, 3000);
   } catch (error) {
     // console.log(error.response.data.message); // This returned exact error message by API instead of generic error message.
