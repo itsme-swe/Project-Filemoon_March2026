@@ -6,7 +6,6 @@ mongoose.connect(process.env.DB);
 
 const root = process.cwd();
 const express = require("express");
-const path = require("path");
 const { v4: uniqueID } = require("uuid");
 const cors = require("cors");
 
@@ -65,7 +64,7 @@ app.get("/dashboard", (req, res) => {
 });
 
 app.get("/files", (req, res) => {
-  res.sendFile(getPath("app/my-files.html"));
+  res.sendFile(getPath("app/files.html"));
 });
 
 app.get("/history", (req, res) => {
