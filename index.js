@@ -4,7 +4,9 @@ dotenv.config();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB);
 
+const root = process.cwd();
 const express = require("express");
+const path = require("path");
 const { v4: uniqueID } = require("uuid");
 const cors = require("cors");
 
@@ -31,6 +33,7 @@ const {
 } = require("./controller/file.controller");
 const { fetchDashboard } = require("./controller/dashboard.controller");
 const { verifyToken } = require("./controller/token.controller");
+const getPath = require("./utils/getPath.utilis");
 const app = express();
 app.listen(process.env.PORT || 8080);
 
@@ -44,12 +47,37 @@ app.use(
   }),
 );
 
-//🌟 End Points
-app.post("/signup", signup);
-app.post("/login", login);
-app.post("/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
-app.get("/file", fetchFiles);
-app.delete("/file/:id", deleteFile);
-app.get("/file/download/:id", downloadFile);
-app.get("/dashboard", fetchDashboard);
-app.post("/token/verify", verifyToken);
+//🌟 Frontend UI routing
+app.get("/signup", (req, res) => {
+  res.sendFile(getPath("signup.html"));
+});
+
+app.get("/", (req, res) => {
+  res.sendFile(getPath("index.html"));
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(getPath("index.html"));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(getPath("app/dashboard.html"));
+});
+
+app.get("/files", (req, res) => {
+  res.sendFile(getPath("app/my-files.html"));
+});
+
+app.get("/history", (req, res) => {
+  res.sendFile(getPath("app/history.html"));
+});
+
+// 🌟 Backend APIs end points
+app.post("/api/signup", signup);
+app.post("/api/login", login);
+app.post("/api/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
+app.get("/api/file", fetchFiles);
+app.delete("/api/file/:id", deleteFile);
+app.get("/api/file/download/:id", downloadFile);
+app.get("/api/dashboard", fetchDashboard);
+app.post("/api/token/verify", verifyToken);
