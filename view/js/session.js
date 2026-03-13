@@ -3,8 +3,7 @@ const getSession = async () => {
     const session = localStorage.getItem("authToken");
 
     if (!session) {
-      location.href = "../index.html";
-      return;
+      return null;
     }
 
     const payload = {
@@ -14,11 +13,13 @@ const getSession = async () => {
       "http://localhost:8080/token/verify",
       payload,
     );
-    console.log(data);
+    return data;
   } catch (error) {
-    localStorage.clear();
-    location.href = "../index.html";
+    return null;
   }
 };
 
-getSession();
+const logout = () => {
+  localStorage.clear();
+  location.href = "../index.html";
+};

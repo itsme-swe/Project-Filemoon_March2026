@@ -8,3 +8,15 @@ const toggleDrawer = () => {
     drawer.style.right = "0px";
   }
 };
+
+const uploadFile = async (e) => {
+  try {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const { data } = await axios.post("http://localhost:8080/file", formData);
+    console.log(data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};

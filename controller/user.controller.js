@@ -25,6 +25,7 @@ const login = async (req, res) => {
     if (!isLogin)
       return res.status(401).json({ message: "Invalid credentials " });
 
+    // 🌟 This is how we generate token and send it with successfull msg
     const payload = {
       email: user.email,
       mobile: user.mobile,

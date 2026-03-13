@@ -44,6 +44,7 @@ app.use(
   }),
 );
 
+//🌟 End Points
 app.post("/signup", signup);
 app.post("/login", login);
 app.post("/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
