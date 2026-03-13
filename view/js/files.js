@@ -21,7 +21,18 @@ const uploadFile = async (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const { data } = await axios.post("/api/file", formData);
+    const options = {
+      onUploadProgress: (e) => {
+        const loaded = e.loaded;
+        const total = e.total;
+        const percentValue = Math.floor((loaded * 100) / total);
+        const progress = document.getElementById("progress");
+        progress.style.width = percentValue + "%";
+        progress.innerHTML = percentValue + "%";
+      },
+    };
+
+    const { data } = await axios.post("/api/file", formData, options);
     console.log(data);
   } catch (error) {
     console.log(error.message);
