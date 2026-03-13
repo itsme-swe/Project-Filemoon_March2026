@@ -17,8 +17,3 @@ const getSession = async () => {
     return null;
   }
 };
-
-const logout = () => {
-  localStorage.clear();
-  location.href = "/login";
-};

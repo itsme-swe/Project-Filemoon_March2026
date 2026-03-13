@@ -1,5 +1,10 @@
 axios.defaults.baseURL = SERVER;
 
+const logout = () => {
+  localStorage.clear();
+  location.href = "/login";
+};
+
 const toggleDrawer = () => {
   const drawer = document.getElementById("drawer");
   const rightValue = drawer.style.right;
