@@ -1,5 +1,10 @@
 axios.defaults.baseURL = SERVER;
 
+//🌟 Third party library used to give notification on UI
+const toast = new Notyf({
+  position: { x: "center", y: "top" },
+});
+
 const logout = () => {
   localStorage.clear();
   location.href = "/login";
@@ -19,6 +24,8 @@ const toggleDrawer = () => {
 const uploadFile = async (e) => {
   try {
     e.preventDefault();
+    const progress = document.getElementById("progress");
+    const uploadBtn = document.getElementById("upload-btn");
     const form = e.target;
     const formData = new FormData(form);
     const options = {
@@ -26,14 +33,18 @@ const uploadFile = async (e) => {
         const loaded = e.loaded;
         const total = e.total;
         const percentValue = Math.floor((loaded * 100) / total);
-        const progress = document.getElementById("progress");
         progress.style.width = percentValue + "%";
         progress.innerHTML = percentValue + "%";
       },
     };
-
+    uploadBtn.disabled = true;
     const { data } = await axios.post("/api/file", formData, options);
-    console.log(data);
+    toast.success(`${data.filename} has been uploaded !`);
+    uploadBtn.disabled = false;
+    progress.style.width = 0;
+    progress.innerHTML = "";
+    form.reset();
+    toggleDrawer();
   } catch (error) {
     console.log(error.message);
   }
